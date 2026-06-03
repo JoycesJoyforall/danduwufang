@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FDF8F0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="蛋读无妨">
+<meta name="mobile-web-app-capable" content="yes">
+<title>蛋读无妨</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon.svg">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;600&family=LXGW+WenKai:wght@300;400;700&display=swap');
+@font-face{
+  font-family:'WhoseLove';
+  src:local('WhoseLove'),local('Whose Love'),url('./WhoseLove.woff2') format('woff2'),url('./WhoseLove.ttf') format('truetype');
+  font-display:swap;
+  unicode-range:U+0000-024F,U+1E00-1EFF;
+}
+:root{
+  --font-en:'WhoseLove','Bradley Hand ITC','Segoe Print','Comic Sans MS',cursive;
+  --font-title:var(--font-en),'ZCOOL XiaoWei','Noto Serif SC',serif;
+  --font-body:var(--font-en),'LXGW WenKai','FangSong','STFangSong','仿宋',serif;
+  --bg:#FDF8F0;
+  --paper:#fffdf9;
+  --card:#FFFFFF;
+  --text:#3A3632;
+  --muted:#8E867A;
+  --light:#BCB5AA;
+  --faint:#E8E2D8;
+  --border:#EDE6DB;
+  --gold:#CFA034;
+  --coral:#D4896A;
+  --green:#6B9E6B;
+  --shadow:0 10px 30px rgba(58,54,50,.08);
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:-webkit-fill-available;background:var(--bg)}
+body{
+  min-height:100vh;
+  min-height:-webkit-fill-available;
+  background:linear-gradient(180deg,#fffdf8 0%,var(--bg) 36%,#fbf3e8 100%);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:15px;
+  line-height:1.75;
+  letter-spacing:0;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior-y:none;
+}
+button,input,textarea{font:inherit;letter-spacing:0;color:inherit}
+button{border:0;background:none;cursor:pointer}
+input[type=text],input[type=number],input[type=date],textarea{
+  width:100%;
+  border:1px solid var(--faint);
+  border-radius:12px;
+  background:#fff;
+  outline:none;
+  -webkit-appearance:none;
+  padding:12px 14px;
+  font-family:var(--font-body);
+  font-size:16px;
+  color:var(--text);
+}
+textarea{min-height:84px;resize:vertical}
+.app{
+  width:min(100%,560px);
+  margin:0 auto;
+  padding:0 18px calc(92px + var(--safe-b));
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  padding:calc(14px + var(--safe-t)) 0 10px;
+  background:linear-gradient(180deg,#fffdf8 76%,rgba(255,253,248,0));
+}
+.brand{text-align:center;padding:8px 0 6px}
+.brand-title{
+  font-family:var(--font-title);
+  font-size:30px;
+  letter-spacing:8px;
+  font-weight:400;
+}
+.brand-sub{
+  margin-top:4px;
+  color:var(--light);
+  font-size:13px;
+  letter-spacing:2px;
+}
+.home-stack{display:flex;flex-direction:column;gap:14px}
+.hero-card{
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+.hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+.hero-kicker{font-size:12px;color:var(--light);letter-spacing:2px}
+.hero-main{font-family:var(--font-title);font-size:26px;line-height:1.35;margin-top:8px}
+.hero-num{font-family:var(--font-en);font-size:42px;line-height:1;color:var(--gold)}
+.hero-note{font-size:12px;color:var(--muted);margin-top:10px}
+.reading-now{padding:4px 0 2px}
+.section-label{font-family:var(--font-title);font-size:13px;color:var(--light);letter-spacing:2px;margin:4px 0 10px}
+.covers{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  padding:2px 2px 10px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.covers::-webkit-scrollbar{display:none}
+.cover-card{flex:0 0 116px;text-align:center}
+.cover-art{
+  width:116px;
+  height:154px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:linear-gradient(145deg,#f2ece2,#e7dfd3);
+  box-shadow:0 8px 20px rgba(58,54,50,.09);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  overflow:hidden;
+}
+.cover-art img{width:100%;height:100%;object-fit:cover}
+.cover-title{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.35;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.cover-cat{font-size:10px;color:var(--light);margin-top:2px}
+.sec-cards{display:flex;flex-direction:column;gap:10px}
+.sec-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  width:100%;
+  text-align:left;
+  padding:16px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:0 4px 16px rgba(58,54,50,.05);
+  transition:transform .12s,box-shadow .12s;
+}
+.sec-card:active{transform:scale(.985);box-shadow:0 2px 10px rgba(58,54,50,.05)}
+.sec-card.add{border-style:dashed;justify-content:center;color:var(--light);font-size:13px;letter-spacing:2px}
+.sec-ico{
+  width:48px;
+  height:48px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg);
+  font-size:27px;
+  flex:0 0 auto;
+}
+.sec-body{min-width:0;flex:1}
+.sec-label{font-family:var(--font-title);font-size:17px;letter-spacing:2px}
+.sec-desc{font-size:12px;color:var(--light);margin-top:2px}
+.sec-count{font-family:var(--font-en);font-size:12px;color:var(--muted);white-space:nowrap}
+.page-head{padding:4px 0 10px}
+.back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  color:var(--light);
+  font-size:14px;
+  padding:8px 4px;
+}
+.page-title{
+  text-align:center;
+  font-family:var(--font-title);
+  font-size:24px;
+  letter-spacing:3px;
+  padding:4px 0 6px;
+}
+.cat-manage{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px}
+.cat-manage-label{font-size:12px;color:var(--light)}
+.cat-del{font-size:12px;color:var(--coral);padding:6px 2px}
+.progress-wrap{padding:8px 0 16px}
+.progress-bar{height:4px;background:var(--faint);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--coral));transition:width .3s}
+.progress-text{text-align:right;color:var(--light);font-family:var(--font-en);font-size:11px;margin-top:4px}
+.items{display:flex;flex-direction:column;gap:12px}
+.item{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:15px;
+  box-shadow:0 4px 16px rgba(58,54,50,.05);
+}
+.item-top{display:flex;gap:12px;align-items:flex-start}
+.item-cover{
+  width:58px;
+  height:78px;
+  border-radius:10px;
+  overflow:hidden;
+  background:var(--faint);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  flex:0 0 auto;
+}
+.item-cover img{width:100%;height:100%;object-fit:cover}
+.item-body{min-width:0;flex:1}
+.item-title{font-size:16px;line-height:1.55;overflow-wrap:anywhere}
+.item-title.done{text-decoration:line-through;color:var(--light)}
+.item-note{font-size:13px;color:var(--muted);margin-top:3px;white-space:pre-wrap;overflow-wrap:anywhere}
+.item-meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.meta-tag{
+  font-size:11px;
+  line-height:1.5;
+  padding:2px 8px;
+  border-radius:999px;
+}
+.tag-reading{background:rgba(207,160,52,.12);color:var(--gold)}
+.tag-done{background:rgba(107,158,107,.12);color:var(--green)}
+.tag-waiting{background:rgba(58,54,50,.05);color:var(--light)}
+.tag-time{font-family:var(--font-en);font-size:11px;color:var(--light)}
+.quick-mark{
+  align-self:flex-start;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:34px;
+  padding:6px 11px;
+  border-radius:999px;
+  background:rgba(207,160,52,.09);
+  color:var(--gold);
+  border:1px solid rgba(207,160,52,.18);
+  font-size:12px;
+}
+.sessions{margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.session-item{display:flex;justify-content:space-between;gap:12px;color:var(--light);font-size:12px;padding:2px 0}
+.item-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:4px;
+  margin-top:9px;
+  padding-top:7px;
+  border-top:1px solid var(--border);
+}
+.item-act{min-height:32px;padding:4px 9px;border-radius:8px;color:var(--light);font-size:13px}
+.item-act:active{background:rgba(58,54,50,.05);color:var(--text)}
+.empty{
+  text-align:center;
+  padding:54px 20px;
+  color:var(--light);
+  line-height:2.1;
+  letter-spacing:1px;
+}
+.fab{
+  position:fixed;
+  z-index:90;
+  right:max(18px,calc((100vw - 560px)/2 + 18px));
+  bottom:calc(20px + var(--safe-b));
+  height:52px;
+  min-width:142px;
+  padding:0 20px;
+  border-radius:999px;
+  background:var(--text);
+  color:#fff8ea;
+  box-shadow:0 10px 24px rgba(58,54,50,.22);
+  letter-spacing:2px;
+}
+.bottom-note{
+  text-align:center;
+  padding:32px 0 4px;
+  color:var(--faint);
+  font-family:var(--font-title);
+  font-style:italic;
+  font-size:12px;
+  letter-spacing:2px;
+}
+.modal-bg{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  background:rgba(58,54,50,.36);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.modal{
+  width:100%;
+  max-width:560px;
+  max-height:88vh;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:var(--bg);
+  border-radius:22px 22px 0 0;
+  padding:26px 20px calc(28px + var(--safe-b));
+}
+.modal-title{
+  text-align:center;
+  font-family:var(--font-title);
+  font-size:21px;
+  letter-spacing:3px;
+  margin-bottom:18px;
+}
+.field{margin-bottom:16px}
+.field label{display:block;margin-bottom:6px;color:var(--muted);font-size:12px;letter-spacing:1px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-row{display:flex;gap:10px;margin-top:20px}
+.btn{
+  flex:1;
+  min-height:48px;
+  border-radius:13px;
+  padding:12px;
+  text-align:center;
+  font-size:15px;
+  letter-spacing:1px;
+}
+.btn-primary{background:var(--text);color:#fff8ea}
+.btn-cancel{background:var(--faint);color:var(--muted)}
+.status-btns,.qm-mins{display:flex;gap:8px;flex-wrap:wrap}
+.st-btn,.qm-btn{
+  flex:1 1 30%;
+  min-height:42px;
+  padding:9px 10px;
+  border-radius:11px;
+  border:1.5px solid var(--faint);
+  color:var(--muted);
+  background:transparent;
+}
+.st-btn.sel,.qm-btn.sel{border-color:var(--gold);color:var(--gold);background:rgba(207,160,52,.07)}
+.photo-row{display:flex;gap:10px;flex-wrap:wrap}
+.photo-thumb,.photo-add{
+  width:82px;
+  height:110px;
+  border-radius:12px;
+}
+.photo-thumb{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--border);
+  box-shadow:0 4px 12px rgba(58,54,50,.08);
+}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.ph-del{
+  position:absolute;
+  top:5px;
+  right:5px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(58,54,50,.68);
+  color:#fff;
+  font-size:14px;
+}
+.photo-add{
+  border:2px dashed var(--faint);
+  color:var(--light);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+}
+.photo-add b{font-size:26px;font-weight:400;line-height:1}
+.photo-add span{font-size:11px}
+.ico-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.ico-btn{
+  min-height:44px;
+  border-radius:11px;
+  border:1.5px solid var(--faint);
+  background:#fff;
+  font-size:22px;
+}
+.ico-btn.sel{border-color:var(--text)}
+@media (max-width:380px){
+  .app{padding-left:14px;padding-right:14px}
+  .brand-title{font-size:27px;letter-spacing:6px}
+  .hero-main{font-size:23px}
+  .hero-num{font-size:36px}
+  .sec-card{padding:14px}
+  .quick-mark{padding:6px 9px}
+  .field-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<main class="app" id="app"></main>
+<script>
+const SK='danduwufang-pwa-v1';
+const defaultData={
+  categories:[
+    {id:'book',name:'书',ico:'📖'},
+    {id:'course',name:'课程',ico:'📚'},
+    {id:'film',name:'电影',ico:'🎬'}
+  ],
+  items:[
+    {id:'i1',catId:'book',title:'哈萨比斯 谷歌AI之脑',note:'',status:'waiting',order:0,startDate:'',endDate:'',sessions:[],photos:[]},
+    {id:'i2',catId:'book',title:'Cointelligence',note:'',status:'waiting',order:1,startDate:'',endDate:'',sessions:[],photos:[]},
+    {id:'i3',catId:'course',title:'魏智渊老师的课程',note:'',status:'waiting',order:0,startDate:'',endDate:'',sessions:[],photos:[]},
+    {id:'i4',catId:'course',title:'犟爸父母基本功',note:'',status:'waiting',order:1,startDate:'',endDate:'',sessions:[],photos:[]}
+  ]
+};
+let D=JSON.parse(JSON.stringify(defaultData));
+let view='home';
+let curCat=null;
+let modal=null;
+let editId=null;
+let formPhotos=[];
+
+const storage={
+  async get(k){
+    if(window.storage&&window.storage.get)return window.storage.get(k);
+    const value=localStorage.getItem(k);
+    return value?{value}:null;
+  },
+  async set(k,v){
+    if(window.storage&&window.storage.set)return window.storage.set(k,v);
+    localStorage.setItem(k,v);
+  }
+};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=s=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const WK=['日','一','二','三','四','五','六'];
+const fmtD=s=>{if(!s)return'';const[,m,d]=s.split('-');return`${+m}月${+d}日`};
+const fmtFull=s=>{if(!s)return'';const dt=new Date(`${s}T00:00:00`);return`${dt.getMonth()+1}月${dt.getDate()}日 · 周${WK[dt.getDay()]}`};
+const totalMins=item=>(item.sessions||[]).reduce((sum,x)=>sum+(Number(x.mins)||0),0);
+const fmtMins=m=>{m=Number(m)||0;if(!m)return'';if(m<60)return`${m}分钟`;const h=Math.floor(m/60);const r=m%60;return r?`${h}小时${r}分`:`${h}小时`};
+const catItems=cid=>D.items.filter(i=>i.catId===cid).sort((a,b)=>(a.order||0)-(b.order||0));
+const currentCat=()=>D.categories.find(c=>c.id===curCat);
+
+async function load(){
+  try{
+    const r=await storage.get(SK);
+    if(r&&r.value)D=JSON.parse(r.value);
+  }catch(e){}
+}
+async function save(){
+  try{await storage.set(SK,JSON.stringify(D))}catch(e){alert('保存空间可能已满，可以先少放几张封面图。')}
+}
+function render(){
+  const el=document.getElementById('app');
+  if(view==='list')renderList(el);
+  else renderHome(el);
+  if(modal)renderModal();
+}
+function renderShellTop(){
+  return `<div class="topbar"><div class="brand"><div class="brand-title">蛋读无妨</div><div class="brand-sub">日子呀，咱慢慢地过</div></div></div>`;
+}
+function renderHome(el){
+  const reading=D.items.filter(i=>i.status==='reading');
+  const withCovers=D.items.filter(i=>i.photos&&i.photos.length&&i.status!=='done');
+  const showCovers=[...new Map([...reading,...withCovers].map(i=>[i.id,i])).values()];
+  const done=D.items.filter(i=>i.status==='done').length;
+  const mins=D.items.reduce((sum,i)=>sum+totalMins(i),0);
+  let h=renderShellTop();
+  h+=`<section class="home-stack">`;
+  h+=`<div class="hero-card"><div class="hero-row"><div><div class="hero-kicker">今天也无妨</div><div class="hero-main">读、看、学，轻轻记住</div></div><div class="hero-num">${D.items.length}</div></div>`;
+  h+=`<div class="hero-note">已完成 ${done} 项${mins?` · 共 ${fmtMins(mins)}`:''}</div></div>`;
+  if(showCovers.length){
+    h+=`<div class="reading-now"><div class="section-label">正在读 · 看 · 学</div><div class="covers">`;
+    showCovers.forEach(item=>{
+      const cat=D.categories.find(c=>c.id===item.catId);
+      h+=`<button class="cover-card" onclick="goList('${esc(item.catId)}')">`;
+      h+=`<div class="cover-art">${item.photos&&item.photos[0]?`<img alt="" src="${item.photos[0]}">`:esc(cat?cat.ico:'📖')}</div>`;
+      h+=`<div class="cover-title">${esc(item.title)}</div><div class="cover-cat">${esc(cat?cat.name:'')}</div></button>`;
+    });
+    h+=`</div></div>`;
+  }
+  h+=`<div class="sec-cards">`;
+  D.categories.forEach(c=>{
+    const items=catItems(c.id);
+    const rd=items.filter(i=>i.status==='reading').length;
+    const dn=items.filter(i=>i.status==='done').length;
+    const totalT=items.reduce((sum,i)=>sum+totalMins(i),0);
+    let desc=`${items.length} 项`;
+    if(rd)desc+=` · ${rd} 进行中`;
+    if(dn)desc+=` · ${dn} 完成`;
+    h+=`<button class="sec-card" onclick="goList('${esc(c.id)}')"><span class="sec-ico">${esc(c.ico)}</span><span class="sec-body"><span class="sec-label">${esc(c.name)}</span><span class="sec-desc">${desc}</span></span>${totalT?`<span class="sec-count">${fmtMins(totalT)}</span>`:''}</button>`;
+  });
+  h+=`<button class="sec-card add" onclick="openCat()">+ 添加分类</button></div>`;
+  h+=`</section><div class="bottom-note">Love · Hope · Respect</div>`;
+  el.innerHTML=h;
+}
+function renderList(el){
+  const cat=currentCat();
+  if(!cat){goHome();return}
+  const items=catItems(curCat);
+  const done=items.filter(i=>i.status==='done').length;
+  const pct=items.length?Math.round(done/items.length*100):0;
+  let h=`<div class="page-head"><button class="back-btn" onclick="goHome()">‹ 首页</button><div class="page-title">${esc(cat.ico)} ${esc(cat.name)}</div>`;
+  h+=`<div class="cat-manage"><div class="cat-manage-label">${items.length} 项 · 完成 ${done}</div><button class="cat-del" onclick="delCat('${esc(curCat)}')">删除分类</button></div>`;
+  h+=`<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-text">${pct}%</div></div></div>`;
+  h+=`<div class="items">`;
+  if(!items.length)h+=`<div class="empty">这里空空的<br>点下方开始添加</div>`;
+  items.forEach((item,idx)=>{
+    const tm=totalMins(item);
+    const stLabel=item.status==='reading'?'进行中':item.status==='done'?'已完成':'待开始';
+    const stCls=item.status==='reading'?'tag-reading':item.status==='done'?'tag-done':'tag-waiting';
+    h+=`<article class="item"><div class="item-top">`;
+    h+=`<div class="item-cover">${item.photos&&item.photos[0]?`<img alt="" src="${item.photos[0]}">`:esc(cat.ico)}</div>`;
+    h+=`<div class="item-body"><div class="item-title ${item.status==='done'?'done':''}">${esc(item.title)}</div>`;
+    if(item.note)h+=`<div class="item-note">${esc(item.note)}</div>`;
+    h+=`<div class="item-meta"><span class="meta-tag ${stCls}">${stLabel}</span>`;
+    if(tm)h+=`<span class="tag-time">⏱ ${fmtMins(tm)}</span>`;
+    if(item.startDate)h+=`<span class="tag-time">${fmtD(item.startDate)}起</span>`;
+    if(item.endDate)h+=`<span class="tag-time">→ ${fmtD(item.endDate)}</span>`;
+    h+=`</div></div>`;
+    if(item.status!=='done')h+=`<button class="quick-mark" onclick="openQuickMark('${esc(item.id)}')">🕐 打卡</button>`;
+    h+=`</div>`;
+    if(item.sessions&&item.sessions.length){
+      h+=`<div class="sessions">`;
+      item.sessions.slice(-3).reverse().forEach(s=>{h+=`<div class="session-item"><span>${fmtFull(s.date)}</span><span>${Number(s.mins)||0}分钟</span></div>`});
+      if(item.sessions.length>3)h+=`<div class="session-item" style="justify-content:center">…共 ${item.sessions.length} 次</div>`;
+      h+=`</div>`;
+    }
+    h+=`<div class="item-actions">`;
+    if(idx>0)h+=`<button class="item-act" onclick="moveItem('${esc(item.id)}',-1)">↑</button>`;
+    if(idx<items.length-1)h+=`<button class="item-act" onclick="moveItem('${esc(item.id)}',1)">↓</button>`;
+    h+=`<button class="item-act" onclick="openEdit('${esc(item.id)}')">编辑</button><button class="item-act" onclick="delItem('${esc(item.id)}')">删除</button></div></article>`;
+  });
+  h+=`</div><button class="fab" onclick="openAdd()">无妨无妨 》</button><div class="bottom-note">Love · Hope · Respect</div>`;
+  el.innerHTML=h;
+}
+function goHome(){view='home';curCat=null;render();scrollTo({top:0,behavior:'smooth'})}
+function goList(catId){view='list';curCat=catId;render();scrollTo({top:0,behavior:'smooth'})}
+function openAdd(){editId=null;formPhotos=[];modal='item';renderModal()}
+function openEdit(id){editId=id;const item=D.items.find(i=>i.id===id);formPhotos=item?(item.photos||[]).slice():[];modal='item';renderModal()}
+function openCat(){editId=null;modal='cat';renderModal()}
+function openQuickMark(id){editId=id;modal='quickmark';renderModal()}
+function closeModal(){modal=null;editId=null;formPhotos=[];document.querySelectorAll('.modal-bg').forEach(e=>e.remove())}
+function renderModal(){
+  document.querySelectorAll('.modal-bg').forEach(e=>e.remove());
+  if(!modal)return;
+  const wrap=document.createElement('div');
+  wrap.className='modal-bg';
+  wrap.onclick=e=>{if(e.target===wrap)closeModal()};
+  if(modal==='item')wrap.innerHTML=itemModalHtml();
+  if(modal==='cat')wrap.innerHTML=catModalHtml();
+  if(modal==='quickmark')wrap.innerHTML=quickMarkHtml();
+  document.body.appendChild(wrap);
+  setTimeout(()=>{const inp=document.getElementById('m-t')||document.getElementById('m-cn');if(inp)inp.focus()},100);
+}
+function itemModalHtml(){
+  const isEdit=!!editId;
+  const item=isEdit?D.items.find(i=>i.id===editId):null;
+  const st=item?item.status:'waiting';
+  let h=`<div class="modal"><div class="modal-title">${isEdit?'编辑':'无妨无妨 》'}</div>`;
+  h+=`<div class="field"><label>名称</label><input type="text" id="m-t" value="${esc(item?item.title:'')}" placeholder="书名、课程名、电影名…"></div>`;
+  h+=`<div class="field"><label>备注</label><textarea id="m-n" placeholder="想记的…">${esc(item?item.note:'')}</textarea></div>`;
+  h+=`<div class="field-row"><div class="field"><label>开始</label><input type="date" id="m-sd" value="${esc(item?item.startDate||'':'')}"></div><div class="field"><label>结束</label><input type="date" id="m-ed" value="${esc(item?item.endDate||'':'')}"></div></div>`;
+  if(isEdit){
+    h+=`<div class="field"><label>状态</label><div class="status-btns">`;
+    [{v:'waiting',l:'待开始'},{v:'reading',l:'进行中'},{v:'done',l:'已完成'}].forEach(s=>{h+=`<button class="st-btn ${st===s.v?'sel':''}" onclick="selectStatus(this,'${s.v}')">${s.l}</button>`});
+    h+=`</div><input type="hidden" id="m-st" value="${esc(st)}"></div>`;
+  }
+  h+=`<div class="field"><label>封面（最多2张）</label><div class="photo-row">`;
+  formPhotos.forEach((p,i)=>{h+=`<div class="photo-thumb"><img alt="" src="${p}"><button class="ph-del" onclick="removePhoto(${i})">×</button></div>`});
+  if(formPhotos.length<2)h+=`<button class="photo-add" onclick="pickPhoto()"><b>+</b><span>封面</span></button>`;
+  h+=`</div></div><div class="btn-row"><button class="btn btn-cancel" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveItem()">${isEdit?'保存':'添加'}</button></div></div>`;
+  return h;
+}
+function catModalHtml(){
+  const icos=['📖','📚','🎬','🎧','🎨','🎮','💻','📝','🔬','🌍','🏃','🎵'];
+  let h=`<div class="modal"><div class="modal-title">添加分类</div><div class="field"><label>名称</label><input type="text" id="m-cn" placeholder="播客、纪录片…"></div>`;
+  h+=`<div class="field"><label>图标</label><div class="ico-grid">`;
+  icos.forEach((ico,i)=>{h+=`<button class="ico-btn ${i===0?'sel':''}" data-ico onclick="selectIcon(this,'${ico}')">${ico}</button>`});
+  h+=`</div><input type="hidden" id="m-ci" value="${icos[0]}"></div>`;
+  h+=`<div class="btn-row"><button class="btn btn-cancel" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveCat()">添加</button></div></div>`;
+  return h;
+}
+function quickMarkHtml(){
+  const item=D.items.find(i=>i.id===editId);
+  if(!item){closeModal();return''}
+  let h=`<div class="modal"><div class="modal-title">🕐 打卡</div><div style="text-align:center;color:var(--muted);margin-bottom:16px;overflow-wrap:anywhere">${esc(item.title)}</div>`;
+  h+=`<div class="field"><label>今天花了多久</label><div class="qm-mins">`;
+  [10,15,20,30,45,60,90,120].forEach(m=>{h+=`<button class="qm-btn" onclick="selectMinutes(this,${m})">${m<60?m+'分':m/60+'小时'}</button>`});
+  h+=`</div><input type="hidden" id="qm-v"></div><div class="field"><label>或者自己填</label><input type="number" id="qm-custom" placeholder="分钟数" inputmode="numeric"></div>`;
+  h+=`<div class="btn-row"><button class="btn btn-cancel" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveQuickMark()">记录</button></div></div>`;
+  return h;
+}
+function selectStatus(btn,v){document.querySelectorAll('.st-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');document.getElementById('m-st').value=v}
+function selectIcon(btn,v){document.querySelectorAll('.ico-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');document.getElementById('m-ci').value=v}
+function selectMinutes(btn,v){document.querySelectorAll('.qm-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');document.getElementById('qm-v').value=v;document.getElementById('qm-custom').value=''}
+function removePhoto(i){formPhotos.splice(i,1);renderModal()}
+function resizeImg(file,maxW=420){
+  return new Promise(resolve=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const ratio=Math.min(maxW/img.width,maxW/img.height,1);
+        const canvas=document.createElement('canvas');
+        canvas.width=Math.round(img.width*ratio);
+        canvas.height=Math.round(img.height*ratio);
+        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+        resolve(canvas.toDataURL('image/jpeg',.72));
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function pickPhoto(){
+  const inp=document.createElement('input');
+  inp.type='file';
+  inp.accept='image/*';
+  inp.onchange=async e=>{
+    const file=e.target.files&&e.target.files[0];
+    if(!file)return;
+    const data=await resizeImg(file);
+    if(formPhotos.length<2)formPhotos.push(data);
+    renderModal();
+  };
+  inp.click();
+}
+async function saveItem(){
+  const title=document.getElementById('m-t').value.trim();
+  if(!title)return;
+  const note=document.getElementById('m-n').value.trim();
+  const startDate=document.getElementById('m-sd').value;
+  const endDate=document.getElementById('m-ed').value;
+  if(editId){
+    const item=D.items.find(i=>i.id===editId);
+    if(item){
+      item.title=title;item.note=note;item.startDate=startDate;item.endDate=endDate;
+      item.status=document.getElementById('m-st')?document.getElementById('m-st').value:item.status;
+      item.photos=formPhotos.slice();
+    }
+  }else{
+    const items=catItems(curCat);
+    D.items.push({id:uid(),catId:curCat,title,note,status:'waiting',order:items.length,startDate,endDate,sessions:[],photos:formPhotos.slice()});
+  }
+  closeModal();
+  await save();
+  render();
+}
+async function saveCat(){
+  const name=document.getElementById('m-cn').value.trim();
+  if(!name)return;
+  D.categories.push({id:uid(),name,ico:document.getElementById('m-ci').value||'📖'});
+  closeModal();
+  await save();
+  render();
+}
+async function saveQuickMark(){
+  const custom=document.getElementById('qm-custom').value;
+  const picked=document.getElementById('qm-v').value;
+  const mins=parseInt(custom||picked||'0',10);
+  if(!mins||mins<=0)return;
+  const item=D.items.find(i=>i.id===editId);
+  if(!item)return;
+  if(!item.sessions)item.sessions=[];
+  item.sessions.push({date:today(),mins});
+  if(item.status==='waiting'){item.status='reading';if(!item.startDate)item.startDate=today()}
+  closeModal();
+  await save();
+  render();
+}
+async function moveItem(id,dir){
+  const items=catItems(curCat);
+  const idx=items.findIndex(i=>i.id===id);
+  const swap=idx+dir;
+  if(idx<0||swap<0||swap>=items.length)return;
+  const tmp=items[idx].order;
+  items[idx].order=items[swap].order;
+  items[swap].order=tmp;
+  await save();
+  render();
+}
+async function delItem(id){
+  if(!confirm('删除这条记录？'))return;
+  D.items=D.items.filter(i=>i.id!==id);
+  await save();
+  render();
+}
+async function delCat(cid){
+  const cat=D.categories.find(c=>c.id===cid);
+  if(!cat)return;
+  const n=catItems(cid).length;
+  if(!confirm(n?`删除「${cat.name}」及其 ${n} 条内容？`:`删除分类「${cat.name}」？`))return;
+  D.categories=D.categories.filter(c=>c.id!==cid);
+  D.items=D.items.filter(i=>i.catId!==cid);
+  curCat=null;view='home';
+  await save();
+  render();
+}
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+(async()=>{await load();render()})();
+</script>
+</body>
+</html>
