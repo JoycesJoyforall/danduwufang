@@ -15,11 +15,8 @@
 @import url('https://db.onlinewebfonts.com/c/ab05f76cbbd00be80948b88cd23a4f46?family=Choose+Love');
 
 :root{
-  /* Chinese font: title style */
   --fc:'ZCOOL XiaoWei','Noto Serif SC','PingFang SC','STSong',serif;
-  /* English font: Choose Love → Caveat fallback */
   --fe:'Choose Love','Caveat','Segoe Script',cursive;
-  /* Combined: English chars hit Choose Love first, Chinese chars fall through to ZCOOL XiaoWei */
   --f:'Choose Love','Caveat','ZCOOL XiaoWei','PingFang SC','STSong',serif;
 
   --bg:#FDF8F0;--text:#3A3632;--muted:#918A7E;--light:#C4BFB5;--faint:#E5E0D8;--border:#EBE7DF;--card:#FFFFFF;
@@ -76,14 +73,26 @@ textarea{
 
 /* ═══ SECTION CARDS ═══ */
 .sec-cards{display:flex;flex-direction:column;gap:12px;padding-bottom:16px;}
-.sec-card{display:flex;align-items:center;gap:16px;padding:20px;background:var(--card);border-radius:16px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;transition:transform 0.12s;border:1px solid var(--border);}
-.sec-card:active{transform:scale(0.97);}
+#sec-sort{display:flex;flex-direction:column;gap:12px;}
+.sec-card{display:flex;align-items:center;gap:8px;padding:18px 14px 18px 18px;background:var(--card);border-radius:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid var(--border);transition:box-shadow 0.2s,opacity 0.2s;}
+.sec-tap{display:flex;align-items:center;gap:16px;flex:1;min-width:0;cursor:pointer;transition:transform 0.12s;}
+.sec-tap:active{transform:scale(0.98);}
 .sec-ico{font-size:28px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;
   background:var(--bg);border-radius:14px;flex-shrink:0;}
+.sec-main{flex:1;min-width:0;}
 .sec-label{font-size:17px;font-family:var(--fc);letter-spacing:4px;}
 .sec-desc{font-size:11px;color:var(--light);margin-top:2px;letter-spacing:1px;}
+.sec-mini{margin-top:9px;}
+.sec-mini-bar{height:3px;background:var(--faint);border-radius:2px;overflow:hidden;}
+.sec-mini-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--coral));border-radius:2px;transition:width 0.5s ease;}
+.sec-time{font-size:10px;color:var(--light);margin-top:6px;letter-spacing:0.5px;font-family:var(--f);}
+.sec-time .over-txt{color:var(--coral);}
+.sec-grip{flex-shrink:0;width:34px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--light);
+  font-size:17px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;}
+.sec-grip:active{cursor:grabbing;color:var(--muted);}
 .sec-count{font-size:12px;color:var(--light);margin-left:auto;flex-shrink:0;font-family:var(--fe);}
+.dragging{opacity:0.55;box-shadow:0 10px 28px rgba(0,0,0,0.16);}
 
 /* ═══ EXPORT CARD ═══ */
 .export-card{margin-top:4px;display:flex;align-items:center;gap:16px;padding:18px 20px;background:transparent;
@@ -97,7 +106,7 @@ textarea{
 .page-title{font-size:24px;font-family:var(--fc);letter-spacing:6px;text-align:center;padding:22px 0 6px;}
 .items{display:flex;flex-direction:column;gap:14px;padding-bottom:28px;min-height:100px;}
 .item{background:var(--card);border-radius:16px;padding:18px 18px 14px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid var(--border);}
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid var(--border);transition:box-shadow 0.2s,opacity 0.2s;}
 .item-top{display:flex;gap:14px;align-items:flex-start;}
 .item-cover{width:58px;height:80px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--faint);
   display:flex;align-items:center;justify-content:center;font-size:20px;
@@ -123,18 +132,31 @@ textarea{
 .sessions{margin-top:10px;padding-top:8px;}
 .session-item{font-size:11px;color:var(--light);padding:2px 0;display:flex;justify-content:space-between;font-family:var(--f);}
 
+/* est vs actual cost bar (item + project) */
+.cost-wrap{margin-top:9px;}
+.cost-bar{height:4px;background:var(--faint);border-radius:2px;overflow:hidden;}
+.cost-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--coral));border-radius:2px;transition:width 0.5s ease;}
+.cost-fill.over{background:var(--coral);}
+.cost-line{margin-top:5px;}
+.cost-num{font-size:10px;color:var(--light);letter-spacing:0.5px;font-family:var(--f);}
+.cost-num .over-txt{color:var(--coral);}
+
 .item-actions{display:flex;justify-content:flex-end;gap:4px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);}
 .item-act{padding:5px 10px;font-size:12px;color:var(--faint);border-radius:8px;letter-spacing:1px;font-family:var(--fc);}
 .item-act:active{color:var(--text);background:rgba(0,0,0,0.03);}
+.item-grip{padding:5px 12px;font-size:15px;color:var(--light);border-radius:8px;margin-right:auto;
+  touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;}
+.item-grip:active{cursor:grabbing;color:var(--muted);background:rgba(0,0,0,0.03);}
 
 /* progress */
-.progress-wrap{padding:2px 0 18px;}
+.progress-wrap{padding:2px 0 14px;}
 .progress-bar{height:3px;background:var(--faint);border-radius:2px;overflow:hidden;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--coral));border-radius:2px;transition:width 0.5s ease;}
 .progress-text{font-size:10px;color:var(--light);text-align:right;margin-top:5px;letter-spacing:1px;font-family:var(--fe);}
 .cat-manage{display:flex;align-items:center;justify-content:space-between;padding:4px 0 8px;}
 .cat-manage-label{font-size:11px;color:var(--light);letter-spacing:1px;}
 .cat-del{font-size:11px;color:var(--coral);padding:4px 8px;letter-spacing:1px;}
+.proj-cost{padding:0 0 18px;}
 
 /* fab */
 .fab{position:fixed;bottom:calc(26px + var(--safe-b));right:calc(50% - 240px);height:50px;padding:0 24px;border-radius:25px;
@@ -156,6 +178,7 @@ textarea{
 .modal-title{font-size:22px;font-family:var(--fc);letter-spacing:5px;text-align:center;margin-bottom:22px;}
 .field{margin-bottom:16px;}
 .field label{font-size:12px;color:var(--muted);letter-spacing:3px;display:block;margin-bottom:7px;font-family:var(--fc);}
+.field .hint{font-size:10px;color:var(--light);letter-spacing:1px;margin-bottom:7px;font-family:var(--fc);}
 .btn-row{display:flex;gap:10px;margin-top:22px;}
 .btn{flex:1;padding:15px;border-radius:14px;font-size:15px;letter-spacing:3px;font-family:var(--fc);text-align:center;}
 .btn-primary{background:var(--text);color:#FDF8F0;}.btn-primary:active{opacity:0.8;}
@@ -166,6 +189,13 @@ textarea{
   border:1.5px solid var(--faint);color:var(--light);background:transparent;transition:all 0.15s;}
 .st-btn.sel{border-color:var(--text);color:var(--text);background:rgba(0,0,0,0.03);}
 .st-btn:active{transform:scale(0.95);}
+
+/* est time picker */
+.est-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+.est-chip{padding:9px 16px;border-radius:11px;font-size:14px;font-family:var(--fe);letter-spacing:0.5px;
+  border:1.5px solid var(--faint);color:var(--muted);transition:all 0.15s;background:transparent;}
+.est-chip.sel{border-color:var(--gold);color:var(--gold);background:rgba(207,160,52,0.06);}
+.est-chip:active{transform:scale(0.94);}
 
 /* photos in modal */
 .photo-row{display:flex;gap:12px;flex-wrap:wrap;}
@@ -215,6 +245,31 @@ textarea{
 .data-btn{padding:10px 20px;border-radius:10px;font-size:12px;letter-spacing:1px;background:#F0EDE8;color:var(--text);font-family:var(--fc);}
 .data-btn:active{opacity:0.7;}
 .data-btn.del{background:none;color:var(--light);font-size:11px;}
+
+/* ═══ INSIGHTS / TRENDS ═══ */
+.ins-sec{margin:6px 0 26px;}
+.ins-h{font-size:12px;color:var(--muted);letter-spacing:3px;font-family:var(--fc);margin-bottom:14px;}
+.ins-row{display:flex;align-items:center;gap:10px;margin-bottom:13px;}
+.ins-row-ico{font-size:18px;width:26px;text-align:center;flex-shrink:0;}
+.ins-row-main{flex:1;min-width:0;}
+.ins-row-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:5px;}
+.ins-row-name{font-family:var(--fc);letter-spacing:1px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ins-row-val{font-family:var(--f);color:var(--muted);flex-shrink:0;margin-left:10px;font-size:11px;}
+.ins-bar{height:6px;background:var(--faint);border-radius:3px;overflow:hidden;}
+.ins-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--coral));border-radius:3px;transition:width 0.6s ease;}
+.days{display:flex;align-items:flex-end;gap:4px;height:90px;padding:0 2px;}
+.day-col{flex:1;display:flex;align-items:flex-end;justify-content:center;height:100%;}
+.day-bar{width:100%;max-width:15px;background:linear-gradient(180deg,var(--coral),var(--gold));border-radius:3px 3px 0 0;min-height:3px;transition:height 0.6s ease;}
+.day-bar.zero{background:var(--faint);}
+.day-bar.peak{box-shadow:0 0 0 2px rgba(207,160,52,0.2);}
+.days-x{display:flex;justify-content:space-between;font-size:9px;color:var(--light);margin-top:8px;letter-spacing:0.5px;font-family:var(--fe);}
+.ins-note{text-align:center;font-size:10px;color:var(--light);margin-top:8px;letter-spacing:1px;font-family:var(--fc);}
+.stat-row{display:flex;gap:12px;}
+.stat-card{flex:1;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;}
+.stat-num{font-size:25px;font-family:var(--fe);color:var(--text);letter-spacing:1px;}
+.stat-num small{font-size:13px;color:var(--light);}
+.stat-lbl{font-size:11px;color:var(--light);letter-spacing:2px;margin-top:4px;font-family:var(--fc);}
+.ins-trend{text-align:center;font-size:11px;color:var(--muted);margin-top:12px;letter-spacing:1px;font-family:var(--fc);}
 </style>
 </head>
 <body>
@@ -222,21 +277,23 @@ textarea{
 <input type="file" id="imp-f" accept=".json" style="display:none">
 <script>
 /* ══════════════════════════════════════
-   蛋读无妨  ·  Egg Reads, No Worries
+   蛋读无妨 V4  ·  Egg Reads, No Worries
+   记录 · 项目 · 时间成本 · 时间去哪了
+   V4: 项目命名 · 封面进备份 · 趋势视图 · 拖动自动滚动
    ══════════════════════════════════════ */
 
 const SK='danduwufang-v3';
 let D={
   categories:[
-    {id:'book',name:'书',ico:'📖'},
-    {id:'course',name:'课程',ico:'📚'},
-    {id:'film',name:'电影',ico:'🎬'}
+    {id:'book',name:'书',ico:'📖',order:0,budgetMode:'tasks',estMins:0},
+    {id:'course',name:'课程',ico:'📚',order:1,budgetMode:'tasks',estMins:0},
+    {id:'film',name:'电影',ico:'🎬',order:2,budgetMode:'tasks',estMins:0}
   ],
   items:[
-    {id:'i1',catId:'book',title:'哈萨比斯 谷歌AI之脑',note:'',status:'waiting',order:0,startDate:'',endDate:'',sessions:[],photos:[]},
-    {id:'i2',catId:'book',title:'Cointelligence',note:'',status:'waiting',order:1,startDate:'',endDate:'',sessions:[],photos:[]},
-    {id:'i3',catId:'course',title:'魏智渊老师的课程',note:'',status:'waiting',order:0,startDate:'',endDate:'',sessions:[],photos:[]},
-    {id:'i4',catId:'course',title:'犟爸父母基本功',note:'',status:'waiting',order:1,startDate:'',endDate:'',sessions:[],photos:[]},
+    {id:'i1',catId:'book',title:'哈萨比斯 谷歌AI之脑',note:'',status:'waiting',order:0,startDate:'',endDate:'',estMins:0,sessions:[],photos:[]},
+    {id:'i2',catId:'book',title:'Cointelligence',note:'',status:'waiting',order:1,startDate:'',endDate:'',estMins:0,sessions:[],photos:[]},
+    {id:'i3',catId:'course',title:'魏智渊老师的课程',note:'',status:'waiting',order:0,startDate:'',endDate:'',estMins:0,sessions:[],photos:[]},
+    {id:'i4',catId:'course',title:'犟爸父母基本功',note:'',status:'waiting',order:1,startDate:'',endDate:'',estMins:0,sessions:[],photos:[]}
   ]
 };
 
@@ -256,6 +313,25 @@ async function saveData(){
   try{localStorage.setItem(SK,json);}catch(e){}
 }
 
+/* ── migrate older data: fill any missing V3 fields ── */
+function normalize(){
+  if(!Array.isArray(D.categories))D.categories=[];
+  if(!Array.isArray(D.items))D.items=[];
+  D.categories.forEach((c,i)=>{
+    if(typeof c.order!=='number')c.order=i;
+    if(c.budgetMode!=='fixed'&&c.budgetMode!=='tasks')c.budgetMode='tasks';
+    if(typeof c.estMins!=='number')c.estMins=0;
+    if(!c.ico)c.ico='📖';
+  });
+  D.items.forEach(it=>{
+    if(typeof it.order!=='number')it.order=0;
+    if(typeof it.estMins!=='number')it.estMins=0;
+    if(!Array.isArray(it.sessions))it.sessions=[];
+    if(!Array.isArray(it.photos))it.photos=[];
+    if(!it.status)it.status='waiting';
+  });
+}
+
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const esc=s=>(s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const today=()=>{const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
@@ -267,13 +343,82 @@ const fmtMins=m=>{if(!m)return'';if(m<60)return m+'min';const h=Math.floor(m/60)
 const fmtMinsCN=m=>{if(!m)return'';if(m<60)return m+'分钟';const h=Math.floor(m/60);const r=m%60;return r?`${h}小时${r}分`:`${h}小时`;};
 const catItems=cid=>D.items.filter(i=>i.catId===cid).sort((a,b)=>a.order-b.order);
 
-let view='home',curCat=null,modal=null,editId=null,formPhotos=[];
+/* ── project (category) time helpers ── */
+const sortedCats=()=>D.categories.slice().sort((a,b)=>(a.order||0)-(b.order||0));
+const catEstSum=cid=>D.items.filter(i=>i.catId===cid).reduce((s,i)=>s+(i.estMins||0),0);
+const catBudget=cat=>cat.budgetMode==='fixed'?(cat.estMins||0):catEstSum(cat.id);
+const catActual=cid=>D.items.filter(i=>i.catId===cid).reduce((s,i)=>s+totalMins(i),0);
+
+let view='home',curCat=null,modal=null,editId=null,editCatId=null,formPhotos=[];
 
 function resizeImg(file,maxW=400){
   return new Promise(res=>{const r=new FileReader();r.onload=e=>{const img=new Image();img.onload=()=>{
     const c=document.createElement('canvas');const ratio=Math.min(maxW/img.width,maxW/img.height,1);
     c.width=img.width*ratio;c.height=img.height*ratio;c.getContext('2d').drawImage(img,0,0,c.width,c.height);
     res(c.toDataURL('image/jpeg',0.7));};img.src=e.target.result;};r.readAsDataURL(file);});}
+
+/* ── est vs actual bar (reused for items and projects) ── */
+function costBlock(budget,act,estLabel){
+  if(!budget&&!act)return'';
+  if(!budget){
+    return `<div class="cost-wrap"><div class="cost-line"><span class="cost-num">⏱ 实际 ${fmtMins(act)}</span></div></div>`;
+  }
+  const over=act>budget;
+  const pct=Math.min(100,Math.round(act/budget*100));
+  const aS=fmtMins(act)||'0';
+  let nums=`⏱ 实际 ${aS} / ${estLabel} ${fmtMins(budget)}`;
+  nums+= over ? ` · <span class="over-txt">超 ${fmtMins(act-budget)}</span>` : ` · ${pct}%`;
+  return `<div class="cost-wrap"><div class="cost-bar"><div class="cost-fill ${over?'over':''}" style="width:${over?100:pct}%"></div></div><div class="cost-line"><span class="cost-num">${nums}</span></div></div>`;
+}
+
+/* ── drag to reorder (pointer events: touch + mouse) ── */
+function enableDragSort(container,rowSel,handleSel,onCommit){
+  if(!container)return;
+  container.querySelectorAll(handleSel).forEach(handle=>{
+    handle.addEventListener('pointerdown',e=>{
+      e.preventDefault();e.stopPropagation();
+      const row=handle.closest(rowSel);
+      if(!row)return;
+      try{handle.setPointerCapture(e.pointerId);}catch(_){}
+      row.classList.add('dragging');
+      let curY=e.clientY,raf=null;
+      const EDGE=80,SPEED=12;
+      const reorder=()=>{
+        const rows=Array.from(container.querySelectorAll(rowSel)).filter(r=>r!==row);
+        let placed=false;
+        for(const r of rows){
+          const rc=r.getBoundingClientRect();
+          if(curY<rc.top+rc.height/2){container.insertBefore(row,r);placed=true;break;}
+        }
+        if(!placed)container.appendChild(row);
+      };
+      const tick=()=>{
+        const vh=window.innerHeight;
+        if(curY<EDGE)window.scrollBy(0,-SPEED);
+        else if(curY>vh-EDGE)window.scrollBy(0,SPEED);
+        reorder();
+        raf=requestAnimationFrame(tick);
+      };
+      const move=ev=>{ev.preventDefault();curY=ev.clientY;reorder();};
+      const up=()=>{
+        try{handle.releasePointerCapture(e.pointerId);}catch(_){}
+        if(raf)cancelAnimationFrame(raf);
+        handle.removeEventListener('pointermove',move);
+        handle.removeEventListener('pointerup',up);
+        handle.removeEventListener('pointercancel',up);
+        row.classList.remove('dragging');
+        const ids=Array.from(container.querySelectorAll(rowSel)).map(r=>r.dataset.id);
+        onCommit(ids);
+      };
+      handle.addEventListener('pointermove',move);
+      handle.addEventListener('pointerup',up);
+      handle.addEventListener('pointercancel',up);
+      raf=requestAnimationFrame(tick);
+    });
+  });
+}
+function reorderCats(ids){ids.forEach((id,i)=>{const c=D.categories.find(x=>x.id===id);if(c)c.order=i;});saveData();render();}
+function reorderItems(ids){ids.forEach((id,i)=>{const it=D.items.find(x=>x.id===id);if(it)it.order=i;});saveData();render();}
 
 /* ═══════════════════
    RENDER ENGINE
@@ -283,6 +428,7 @@ function render(){
   if(view==='home')rHome(el);
   else if(view==='list')rList(el);
   else if(view==='export')rExport(el);
+  else if(view==='insights')rInsights(el);
   if(modal)rModal();
 }
 
@@ -296,7 +442,7 @@ function rHome(el){
   h+=`<div class="hdr-sub">日子呀，咱慢慢地过</div></div>`;
 
   if(showCovers.length){
-    h+=`<div class="reading-now"><div class="reading-label">正在读 · 看 · 学</div><div class="covers">`;
+    h+=`<div class="reading-now"><div class="reading-label">正在进行 · ing</div><div class="covers">`;
     showCovers.forEach(item=>{
       const cat=D.categories.find(c=>c.id===item.catId);
       h+=`<div class="cover-card" onclick="goList('${item.catId}')">`;
@@ -311,27 +457,40 @@ function rHome(el){
     h+=`</div></div>`;
   }
 
-  h+=`<div class="sec-cards">`;
-  D.categories.forEach(c=>{
+  h+=`<div class="sec-cards"><div id="sec-sort">`;
+  sortedCats().forEach(c=>{
     const items=catItems(c.id);
     const rd=items.filter(i=>i.status==='reading').length;
     const dn=items.filter(i=>i.status==='done').length;
     let desc=`${items.length} 项`;
     if(rd)desc+=` · ${rd} 进行中`;
     if(dn)desc+=` · ${dn} 完成`;
-    h+=`<div class="sec-card" onclick="goList('${c.id}')"><div class="sec-ico">${c.ico}</div>`;
-    h+=`<div><div class="sec-label">${esc(c.name)}</div><div class="sec-desc">${desc}</div></div>`;
-    const tt=items.reduce((s,i)=>s+totalMins(i),0);
-    if(tt)h+=`<div class="sec-count">${fmtMins(tt)}</div>`;
-    h+=`</div>`;
+    const cpct=items.length?Math.round(dn/items.length*100):0;
+    const bud=catBudget(c);const act=catActual(c.id);
+
+    h+=`<div class="sec-card" data-id="${c.id}"><div class="sec-tap" onclick="goList('${c.id}')">`;
+    h+=`<div class="sec-ico">${c.ico}</div><div class="sec-main">`;
+    h+=`<div class="sec-label">${esc(c.name)}</div><div class="sec-desc">${desc}</div>`;
+    if(items.length){
+      h+=`<div class="sec-mini"><div class="sec-mini-bar"><div class="sec-mini-fill" style="width:${cpct}%"></div></div></div>`;
+    }
+    if(act||bud){
+      let t=`⏱ 实际 ${fmtMins(act)||'0'}`;
+      if(bud){t+=` / 预算 ${fmtMins(bud)}`;if(act>bud)t+=` · <span class="over-txt">超</span>`;}
+      h+=`<div class="sec-time">${t}</div>`;
+    }
+    h+=`</div></div><div class="sec-grip" data-drag>≡</div></div>`;
   });
-  h+=`<div class="sec-card" onclick="modal='cat';rModal()" style="border-style:dashed;justify-content:center;">`;
-  h+=`<div style="font-size:14px;color:var(--light);letter-spacing:4px;font-family:var(--fc)">+ 添加分类</div></div>`;
+  h+=`</div>`;
+  h+=`<div class="sec-card" onclick="openCatAdd()" style="border-style:dashed;justify-content:center;cursor:pointer;padding:20px;">`;
+  h+=`<div style="font-size:14px;color:var(--light);letter-spacing:4px;font-family:var(--fc)">+ 添加项目</div></div>`;
   h+=`</div>`;
 
-  // export & data
+  // insights, export & data
+  h+=`<div class="export-card" onclick="goInsights()" style="margin-bottom:12px;"><div class="export-ico">📈</div>`;
+  h+=`<div><div class="export-label">时间去哪了</div><div class="export-desc">各项目投入 · 最近趋势</div></div></div>`;
   h+=`<div class="export-card" onclick="goExport()"><div class="export-ico">📊</div>`;
-  h+=`<div><div class="export-label">Hi+Ai 共创</div><div class="export-desc">生成学习记录，分析行动路径</div></div></div>`;
+  h+=`<div><div class="export-label">Hi+Ai 共创</div><div class="export-desc">生成记录 · 分析时间成本</div></div></div>`;
 
   h+=`<div class="data-sec"><div class="data-title">数据管理</div><div class="data-btns">`;
   h+=`<button class="data-btn" onclick="exportJSON()">导出 JSON</button>`;
@@ -340,12 +499,14 @@ function rHome(el){
 
   h+=`<div class="values"><span>Love · Hope · Respect</span></div>`;
   el.innerHTML=h;
+  enableDragSort(document.getElementById('sec-sort'),'.sec-card','.sec-grip',reorderCats);
 }
 
 /* ── LIST ── */
 function goList(cid){view='list';curCat=cid;render();window.scrollTo(0,0);}
 function goHome(){view='home';curCat=null;render();window.scrollTo(0,0);}
 function goExport(){view='export';render();window.scrollTo(0,0);}
+function goInsights(){view='insights';render();window.scrollTo(0,0);}
 
 function rList(el){
   const cat=D.categories.find(c=>c.id===curCat);
@@ -356,24 +517,27 @@ function rList(el){
   let h=`<button class="back-btn" onclick="goHome()">‹ 首页</button>`;
   h+=`<div class="page-title">${cat.ico} ${esc(cat.name)}</div>`;
 
+  h+=`<div class="cat-manage"><div class="cat-manage-label">${items.length} 项${done?` · ${done} 完成`:''}</div>`;
+  h+=`<div style="display:flex;gap:2px;"><button class="cat-del" style="color:var(--muted)" onclick="openCatEdit('${curCat}')">编辑</button>`;
+  h+=`<button class="cat-del" onclick="delCat('${curCat}')">删除</button></div></div>`;
+
   if(items.length){
     const pct=Math.round(done/items.length*100);
-    h+=`<div class="cat-manage"><div class="cat-manage-label">${items.length} 项 · ${done} 完成</div>`;
-    h+=`<button class="cat-del" onclick="delCat('${curCat}')">删除分类</button></div>`;
     h+=`<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
-    h+=`<div class="progress-text">${pct}%</div></div>`;
-  }else{
-    h+=`<div class="cat-manage"><div></div><button class="cat-del" onclick="delCat('${curCat}')">删除分类</button></div>`;
+    h+=`<div class="progress-text">完成 ${pct}%</div></div>`;
   }
+  const pcost=costBlock(catBudget(cat),catActual(curCat),'预算');
+  if(pcost)h+=`<div class="proj-cost">${pcost}</div>`;
 
   h+=`<div class="items">`;
-  if(!items.length) h+=`<div class="empty">这里空空的<br>点下方开始添加</div>`;
+  if(!items.length)h+=`<div class="empty">这里空空的<br>点下方开始添加</div>`;
 
-  items.forEach((item,idx)=>{
+  items.forEach(item=>{
     const tm=totalMins(item);
+    const est=item.estMins||0;
     const stLabel=item.status==='reading'?'进行中':item.status==='done'?'已完成':'待开始';
     const stCls=item.status==='reading'?'tag-reading':item.status==='done'?'tag-done':'tag-waiting';
-    h+=`<div class="item"><div class="item-top">`;
+    h+=`<div class="item" data-id="${item.id}"><div class="item-top">`;
     if(item.photos&&item.photos[0]){
       h+=`<div class="item-cover"><img src="${item.photos[0]}"></div>`;
     }else{
@@ -384,7 +548,6 @@ function rList(el){
     if(item.note)h+=`<div class="item-note">${esc(item.note)}</div>`;
     h+=`<div class="item-meta">`;
     h+=`<span class="meta-tag ${stCls}">${stLabel}</span>`;
-    if(tm)h+=`<span class="tag-time">⏱ ${fmtMins(tm)}</span>`;
     if(item.startDate)h+=`<span class="tag-time">${fmtD(item.startDate)}起</span>`;
     if(item.endDate)h+=`<span class="tag-time">→${fmtD(item.endDate)}</span>`;
     h+=`</div></div>`;
@@ -392,6 +555,9 @@ function rList(el){
       h+=`<button class="quick-mark" onclick="event.stopPropagation();openQuickMark('${item.id}')">打卡</button>`;
     }
     h+=`</div>`;
+
+    const ic=costBlock(est,tm,'预估');
+    if(ic)h+=ic;
 
     if(item.sessions&&item.sessions.length){
       const recent=item.sessions.slice(-3).reverse();
@@ -402,8 +568,7 @@ function rList(el){
     }
 
     h+=`<div class="item-actions">`;
-    if(idx>0)h+=`<button class="item-act" onclick="moveItem('${item.id}',-1)">↑</button>`;
-    if(idx<items.length-1)h+=`<button class="item-act" onclick="moveItem('${item.id}',1)">↓</button>`;
+    h+=`<button class="item-grip" data-drag>≡</button>`;
     h+=`<button class="item-act" onclick="openEdit('${item.id}')">编辑</button>`;
     h+=`<button class="item-act" onclick="delItem('${item.id}')">删除</button>`;
     h+=`</div></div>`;
@@ -412,83 +577,180 @@ function rList(el){
   h+=`<button class="fab" onclick="openAdd()">无妨无妨 》</button>`;
   h+=`<div class="values"><span>Love · Hope · Respect</span></div>`;
   el.innerHTML=h;
+  enableDragSort(document.querySelector('.items'),'.item','.item-grip',reorderItems);
 }
 
 /* ── EXPORT VIEW ── */
 function rExport(el){
   let h=`<button class="back-btn" onclick="goHome()">‹ 首页</button>`;
   h+=`<div class="page-title">📊 导出记录</div>`;
-  h+=`<div style="text-align:center;font-size:12px;color:var(--light);letter-spacing:2px;margin-bottom:16px;font-family:var(--fc)">生成学习记录 · 共创行动路径</div>`;
+  h+=`<div style="text-align:center;font-size:12px;color:var(--light);letter-spacing:2px;margin-bottom:16px;font-family:var(--fc)">生成记录 · 分析时间成本</div>`;
 
   const md=genMarkdown();
   h+=`<div class="export-preview"><pre>${esc(md)}</pre></div>`;
   h+=`<button class="copy-btn" id="cp-btn" onclick="copyText()">复制 · Hi+Ai</button>`;
   h+=`<button class="dl-btn" onclick="dlMarkdown()">下载 Markdown 文件</button>`;
 
-  h+=`<div style="margin-top:24px;">`;
-  h+=`<div class="export-options">`;
+  h+=`<div style="margin-top:24px;"><div class="export-options">`;
+  h+=`<div class="export-opt" onclick="dlCSV()"><div class="export-opt-ico">📈</div>`;
+  h+=`<div><div class="export-opt-title">下载 CSV</div><div class="export-opt-desc">用于表格分析 · 预估/实际/差值</div></div></div>`;
   h+=`<div class="export-opt" onclick="exportJSON()"><div class="export-opt-ico">💾</div>`;
-  h+=`<div><div class="export-opt-title">导出完整数据</div><div class="export-opt-desc">JSON 格式，可导入恢复</div></div></div>`;
+  h+=`<div><div class="export-opt-title">导出完整数据</div><div class="export-opt-desc">JSON · 含封面 · 可完整恢复</div></div></div>`;
   h+=`</div></div>`;
 
   h+=`<div class="values"><span>Love · Hope · Respect</span></div>`;
   el.innerHTML=h;
 }
 
+function rInsights(el){
+  let h=`<button class="back-btn" onclick="goHome()">‹ 首页</button>`;
+  h+=`<div class="page-title">📈 时间去哪了</div>`;
+  h+=`<div style="text-align:center;font-size:12px;color:var(--light);letter-spacing:2px;margin-bottom:20px;font-family:var(--fc)">看看时间都花在哪了</div>`;
+
+  const sess=[];
+  D.items.forEach(it=>(it.sessions||[]).forEach(s=>sess.push({date:s.date,mins:s.mins||0,catId:it.catId})));
+  const totalAll=sess.reduce((a,s)=>a+s.mins,0);
+  const totalCount=sess.length;
+
+  if(!totalCount){
+    h+=`<div class="empty">还没有打卡记录<br>去项目里打卡<br>这里就会慢慢长出来</div>`;
+    h+=`<div class="values"><span>Love · Hope · Respect</span></div>`;
+    el.innerHTML=h;return;
+  }
+
+  // 1) where the time went, across projects
+  const cats=sortedCats().map(c=>({name:c.name,ico:c.ico,mins:catActual(c.id)})).filter(c=>c.mins>0).sort((a,b)=>b.mins-a.mins);
+  const maxCat=Math.max.apply(null,cats.map(c=>c.mins).concat([1]));
+  h+=`<div class="ins-sec"><div class="ins-h">各项目投入</div>`;
+  cats.forEach(c=>{
+    const pct=Math.round(c.mins/totalAll*100);
+    h+=`<div class="ins-row"><div class="ins-row-ico">${c.ico}</div><div class="ins-row-main">`;
+    h+=`<div class="ins-row-top"><span class="ins-row-name">${esc(c.name)}</span><span class="ins-row-val">${fmtMins(c.mins)} · ${pct}%</span></div>`;
+    h+=`<div class="ins-bar"><div class="ins-fill" style="width:${Math.round(c.mins/maxCat*100)}%"></div></div>`;
+    h+=`</div></div>`;
+  });
+  h+=`</div>`;
+
+  // 2) last 14 days
+  const byDate={};
+  sess.forEach(s=>{byDate[s.date]=(byDate[s.date]||0)+s.mins;});
+  const base=new Date();base.setHours(0,0,0,0);
+  const days=[];
+  for(let i=13;i>=0;i--){
+    const d=new Date(base);d.setDate(base.getDate()-i);
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    days.push({mins:byDate[key]||0,md:`${d.getMonth()+1}/${d.getDate()}`});
+  }
+  const maxDay=Math.max.apply(null,days.map(d=>d.mins).concat([1]));
+  const peak=days.reduce((m,d)=>d.mins>m?d.mins:m,0);
+  h+=`<div class="ins-sec"><div class="ins-h">最近 14 天</div><div class="days">`;
+  days.forEach(d=>{
+    const ht=d.mins?Math.max(4,Math.round(d.mins/maxDay*100)):3;
+    const cls=d.mins===0?'zero':(d.mins===peak&&peak>0?'peak':'');
+    h+=`<div class="day-col"><div class="day-bar ${cls}" style="height:${ht}%"></div></div>`;
+  });
+  h+=`</div><div class="days-x"><span>${days[0].md}</span><span>${days[13].md}</span></div>`;
+  const peakDay=days.find(d=>d.mins===peak&&peak>0);
+  if(peakDay)h+=`<div class="ins-note">最投入：${peakDay.md} · ${fmtMins(peak)}</div>`;
+  h+=`</div>`;
+
+  // 3) near 7 vs previous 7
+  let near7=0,prev7=0;
+  days.forEach((d,idx)=>{if(idx>=7)near7+=d.mins;else prev7+=d.mins;});
+  const diff=near7-prev7;
+  h+=`<div class="ins-sec"><div class="ins-h">节奏</div><div class="stat-row">`;
+  h+=`<div class="stat-card"><div class="stat-num">${(near7/60).toFixed(1)}<small> h</small></div><div class="stat-lbl">近 7 天</div></div>`;
+  h+=`<div class="stat-card"><div class="stat-num">${(prev7/60).toFixed(1)}<small> h</small></div><div class="stat-lbl">前 7 天</div></div>`;
+  h+=`</div>`;
+  const trend=diff>0?`比上一周多了 ${fmtMins(diff)}`:diff<0?`比上一周少了 ${fmtMins(-diff)}`:`和上一周持平`;
+  h+=`<div class="ins-trend">${trend}</div></div>`;
+
+  // 4) estimate vs actual, overall
+  const tBudget=sortedCats().reduce((s,c)=>s+catBudget(c),0);
+  const cb=costBlock(tBudget,totalAll,'预估');
+  if(cb)h+=`<div class="ins-sec"><div class="ins-h">预估 vs 实际（全部）</div>${cb}</div>`;
+
+  h+=`<div class="ins-note">共打卡 ${totalCount} 次 · 累计 ${fmtMins(totalAll)}</div>`;
+  h+=`<div class="values"><span>Love · Hope · Respect</span></div>`;
+  el.innerHTML=h;
+}
+
 function genMarkdown(){
   const now=new Date();
-  let md=`# 蛋读无妨 · 学习记录\n`;
+  let md=`# 蛋读无妨 · 记录与项目\n`;
   md+=`导出时间：${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日\n\n`;
 
-  const allItems=D.items;
-  const totalTime=allItems.reduce((s,i)=>s+totalMins(i),0);
-  const totalSessions=allItems.reduce((s,i)=>s+(i.sessions||[]).length,0);
-  const reading=allItems.filter(i=>i.status==='reading').length;
-  const done=allItems.filter(i=>i.status==='done').length;
-  const waiting=allItems.filter(i=>i.status==='waiting').length;
+  const all=D.items;
+  const tBudget=sortedCats().reduce((s,c)=>s+catBudget(c),0);
+  const tActual=all.reduce((s,i)=>s+totalMins(i),0);
+  const tSessions=all.reduce((s,i)=>s+(i.sessions||[]).length,0);
+  const reading=all.filter(i=>i.status==='reading').length;
+  const done=all.filter(i=>i.status==='done').length;
+  const waiting=all.filter(i=>i.status==='waiting').length;
 
   md+=`## 总览\n`;
-  md+=`- 共 ${allItems.length} 项（进行中 ${reading} · 已完成 ${done} · 待开始 ${waiting}）\n`;
-  md+=`- 累计学习 ${fmtMinsCN(totalTime)}，打卡 ${totalSessions} 次\n\n`;
+  md+=`- 共 ${all.length} 项（进行中 ${reading} · 已完成 ${done} · 待开始 ${waiting}）\n`;
+  md+=`- 预估合计 ${fmtMinsCN(tBudget)||'—'} · 实际合计 ${fmtMinsCN(tActual)||'—'}`;
+  if(tBudget){const d=tActual-tBudget;md+=` · ${d>0?'超出 '+fmtMinsCN(d):d<0?'剩余 '+fmtMinsCN(-d):'刚好'}`;}
+  md+=`\n- 打卡 ${tSessions} 次\n\n`;
 
-  D.categories.forEach(cat=>{
+  sortedCats().forEach(cat=>{
     const items=catItems(cat.id);
     if(!items.length)return;
-    const catTime=items.reduce((s,i)=>s+totalMins(i),0);
-    md+=`## ${cat.ico} ${cat.name}`;
-    if(catTime)md+=`（累计 ${fmtMinsCN(catTime)}）`;
-    md+=`\n\n`;
+    const bud=catBudget(cat);const act=catActual(cat.id);
+    const dn=items.filter(i=>i.status==='done').length;
+    const pct=Math.round(dn/items.length*100);
+    md+=`## ${cat.ico} ${cat.name}\n`;
+    md+=`- 完成 ${dn}/${items.length}（${pct}%）\n`;
+    md+=`- 预估 ${fmtMinsCN(bud)||'—'} · 实际 ${fmtMinsCN(act)||'—'}`;
+    if(bud){const d=act-bud;md+=` · ${d>0?'超出 '+fmtMinsCN(d):d<0?'剩余 '+fmtMinsCN(-d):'刚好'}`;}
+    md+=`（${cat.budgetMode==='fixed'?'按项目设定':'按任务累加'}）\n\n`;
 
     items.forEach(item=>{
-      const tm=totalMins(item);
+      const est=item.estMins||0;const a=totalMins(item);
       const st=item.status==='reading'?'🔵 进行中':item.status==='done'?'✅ 已完成':'⚪ 待开始';
       md+=`### ${item.title}\n`;
       md+=`状态：${st}`;
-      if(tm)md+=` · 累计 ${fmtMinsCN(tm)}`;
+      if(est||a){md+=` · 实际 ${fmtMinsCN(a)||'0分钟'}`;if(est){md+=` / 预估 ${fmtMinsCN(est)}`;const d=a-est;if(d>0)md+=`（超 ${fmtMinsCN(d)}）`;}}
       if(item.startDate)md+=` · 开始 ${item.startDate}`;
       if(item.endDate)md+=` · 结束 ${item.endDate}`;
       md+=`\n`;
       if(item.note)md+=`备注：${item.note}\n`;
-
       if(item.sessions&&item.sessions.length){
-        md+=`打卡记录（${item.sessions.length} 次）：\n`;
-        item.sessions.forEach(s=>{
-          md+=`  - ${s.date} · ${s.mins}分钟\n`;
-        });
+        md+=`打卡（${item.sessions.length} 次）：${item.sessions.map(s=>`${s.date} ${s.mins}分`).join('；')}\n`;
       }
       md+=`\n`;
     });
   });
 
-  md+=`---\n`;
-  md+=`## Hi+Ai 共创提示\n`;
-  md+=`请根据以上学习记录，帮我分析：\n`;
-  md+=`1. 我目前的学习节奏和时间分配模式\n`;
-  md+=`2. 哪些项目投入较多、哪些可能被忽略\n`;
-  md+=`3. 基于我的进度和时间模式，建议下一步行动路径\n`;
-  md+=`4. 有没有值得调整的优先级或节奏\n\n`;
+  md+=`---\n## Hi+Ai 共创提示\n`;
+  md+=`请根据以上记录帮我分析：\n`;
+  md+=`1. 各项目预估与实际时间的差距，哪些被低估、哪些被高估\n`;
+  md+=`2. 时间主要花在哪里，哪些项目投入多、哪些被忽略\n`;
+  md+=`3. 我的节奏和优先级是否需要调整\n`;
+  md+=`4. 下一步最值得推进的一件事\n\n`;
   md+=`Love · Hope · Respect\n`;
   return md;
+}
+
+/* ── CSV for spreadsheet analysis ── */
+function csvCell(v){v=String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
+function genCSV(){
+  const rows=[['项目','名称','状态','预估分钟','实际分钟','差值分钟','预估小时','实际小时','开始','结束','打卡次数']];
+  sortedCats().forEach(cat=>{
+    catItems(cat.id).forEach(it=>{
+      const est=it.estMins||0;const act=totalMins(it);
+      const st=it.status==='reading'?'进行中':it.status==='done'?'已完成':'待开始';
+      rows.push([cat.name,it.title,st,est,act,act-est,(est/60).toFixed(2),(act/60).toFixed(2),it.startDate||'',it.endDate||'',(it.sessions||[]).length]);
+    });
+  });
+  return rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+}
+function dlCSV(){
+  const csv='\ufeff'+genCSV();
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`蛋读无妨_${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
 function copyText(){
@@ -512,46 +774,51 @@ function dlMarkdown(){
 }
 
 /* ═══ ACTIONS ═══ */
-function moveItem(id,dir){
-  const items=catItems(curCat);const idx=items.findIndex(i=>i.id===id);if(idx<0)return;
-  const si=idx+dir;if(si<0||si>=items.length)return;
-  const tmp=items[idx].order;items[idx].order=items[si].order;items[si].order=tmp;
-  saveData();render();
-}
 function delItem(id){if(!confirm('删除这条记录？'))return;D.items=D.items.filter(i=>i.id!==id);saveData();render();}
 function delCat(cid){
   const cat=D.categories.find(c=>c.id===cid);const n=catItems(cid).length;
-  if(!confirm(n?`删除「${cat.name}」及其 ${n} 条内容？`:`删除分类「${cat.name}」？`))return;
+  if(!confirm(n?`删除「${cat.name}」及其 ${n} 条内容？`:`删除项目「${cat.name}」？`))return;
   D.categories=D.categories.filter(c=>c.id!==cid);D.items=D.items.filter(i=>i.catId!==cid);
   goHome();saveData();
-}
-
-/* ═══ DATA MANAGEMENT ═══ */
-function exportJSON(){
-  const d={version:3,app:'蛋读无妨',exported:new Date().toISOString(),categories:D.categories,items:D.items.map(i=>({...i,photos:[]}))};
-  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download=`danduwufang_${today()}.json`;a.click();URL.revokeObjectURL(a.href);
-}
-function importJSON(file){
-  const r=new FileReader();r.onload=e=>{try{
-    const d=JSON.parse(e.target.result);
-    if(d.categories)D.categories=d.categories;
-    if(d.items)D.items=d.items;
-    saveData();render();alert('导入成功！');
-  }catch(err){alert('导入失败：文件格式不对');}};r.readAsText(file);
-}
-function clearAll(){
-  if(!confirm('确定清除所有数据？建议先导出备份。'))return;
-  D={categories:[{id:'book',name:'书',ico:'📖'},{id:'course',name:'课程',ico:'📚'},{id:'film',name:'电影',ico:'🎬'}],items:[]};
-  saveData();render();
 }
 
 /* ═══ MODALS ═══ */
 function openAdd(){editId=null;formPhotos=[];modal='item';rModal();}
 function openEdit(id){editId=id;const item=D.items.find(i=>i.id===id);formPhotos=item?(item.photos||[]).slice():[];modal='item';rModal();}
 function openQuickMark(id){editId=id;modal='quickmark';rModal();}
-function closeModal(){modal=null;editId=null;formPhotos=[];document.querySelectorAll('.modal-bg').forEach(e=>e.remove());}
+function openCatAdd(){editCatId=null;modal='cat';rModal();}
+function openCatEdit(id){editCatId=id;modal='cat';rModal();}
+function closeModal(){modal=null;editId=null;editCatId=null;formPhotos=[];document.querySelectorAll('.modal-bg').forEach(e=>e.remove());}
+
+/* time-picker helpers (estimate / budget) */
+function pickEst(prefix,mins,btn){
+  document.querySelectorAll('#'+prefix+'-chips .est-chip').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById(prefix+'-v').value=mins;
+  const c=document.getElementById(prefix+'-h');if(c)c.value='';
+}
+function readEst(prefix){
+  const c=document.getElementById(prefix+'-h');
+  if(c&&c.value!==''&&!isNaN(parseFloat(c.value)))return Math.max(0,Math.round(parseFloat(c.value)*60));
+  const v=document.getElementById(prefix+'-v');
+  const n=parseInt(v&&v.value?v.value:'0',10);
+  return n>0?n:0;
+}
+function timePickerHTML(prefix,presets,cur){
+  cur=cur||0;
+  let h=`<div class="est-chips" id="${prefix}-chips">`;
+  presets.forEach(m=>{h+=`<button type="button" class="est-chip ${cur===m?'sel':''}" onclick="pickEst('${prefix}',${m},this)">${fmtMins(m)}</button>`;});
+  h+=`</div>`;
+  const ch=(cur&&!presets.includes(cur))?(cur/60):'';
+  h+=`<input type="number" step="0.5" min="0" inputmode="decimal" id="${prefix}-h" placeholder="或填小时，如 2.5" value="${ch}" oninput="document.querySelectorAll('#${prefix}-chips .est-chip').forEach(b=>b.classList.remove('sel'))">`;
+  h+=`<input type="hidden" id="${prefix}-v" value="${cur||''}">`;
+  return h;
+}
+function setBudMode(mode){
+  document.getElementById('m-cbmode').value=mode;
+  document.querySelectorAll('[data-bmode]').forEach(b=>b.classList.toggle('sel',b.dataset.bmode===mode));
+  const f=document.getElementById('cbud-field');if(f)f.style.display=mode==='fixed'?'block':'none';
+}
 
 function rModal(){
   document.querySelectorAll('.modal-bg').forEach(e=>e.remove());
@@ -565,13 +832,18 @@ function rModal(){
     const t=item?item.title:'';const n=item?item.note:'';
     const st=item?item.status:'waiting';
     const sd=item?item.startDate||'':'';const ed=item?item.endDate||'':'';
+    const est=item?item.estMins||0:0;
 
     let h=`<div class="modal"><div class="modal-title">${isEdit?'编辑':'无妨无妨 》'}</div>`;
-    h+=`<div class="field"><label>名称</label><input type="text" id="m-t" value="${esc(t)}" placeholder="书名、课程名、电影名…"></div>`;
+    h+=`<div class="field"><label>名称</label><input type="text" id="m-t" value="${esc(t)}" placeholder="书名、课程名、任务名…"></div>`;
     h+=`<div class="field"><label>备注</label><textarea id="m-n" placeholder="想记的…">${esc(n)}</textarea></div>`;
     h+=`<div style="display:flex;gap:10px;">`;
     h+=`<div class="field" style="flex:1"><label>开始</label><input type="date" id="m-sd" value="${sd}"></div>`;
     h+=`<div class="field" style="flex:1"><label>结束</label><input type="date" id="m-ed" value="${ed}"></div></div>`;
+
+    h+=`<div class="field"><label>预估时间</label><div class="hint">想花多久？可留空</div>`;
+    h+=timePickerHTML('iest',[30,60,120,240,480,960],est);
+    h+=`</div>`;
 
     if(isEdit){
       h+=`<div class="field"><label>状态</label><div class="status-btns">`;
@@ -595,16 +867,31 @@ function rModal(){
     div.innerHTML=h;
 
   }else if(modal==='cat'){
-    const icos=['📖','📚','🎬','🎧','🎨','🎮','💻','📝','🔬','🌍','🏃','🎵'];
-    let h=`<div class="modal"><div class="modal-title">添加分类</div>`;
-    h+=`<div class="field"><label>名称</label><input type="text" id="m-cn" placeholder="播客、纪录片…"></div>`;
+    const isEdit=!!editCatId;
+    const cat=isEdit?D.categories.find(c=>c.id===editCatId):null;
+    const cn=cat?cat.name:'';const ci=cat?cat.ico:'📖';
+    const mode=cat?(cat.budgetMode||'tasks'):'tasks';
+    const bud=cat?(cat.estMins||0):0;
+    const icos=['📖','📚','🎬','🎧','🎨','🎮','💻','📝','🔬','🌍','🏃','🎵','📁','💡','🌱','⭐'];
+
+    let h=`<div class="modal"><div class="modal-title">${isEdit?'编辑项目':'添加项目'}</div>`;
+    h+=`<div class="field"><label>名称</label><input type="text" id="m-cn" value="${esc(cn)}" placeholder="项目、播客、纪录片…"></div>`;
     h+=`<div class="field"><label>图标</label><div style="display:flex;gap:8px;flex-wrap:wrap;">`;
-    icos.forEach((ico,i)=>{
-      h+=`<button style="font-size:22px;padding:8px;border-radius:10px;border:1.5px solid ${i===0?'var(--text)':'var(--faint)'}" data-ico onclick="document.querySelectorAll('[data-ico]').forEach(b=>b.style.borderColor='var(--faint)');this.style.borderColor='var(--text)';document.getElementById('m-ci').value='${ico}'">${ico}</button>`;
+    icos.forEach(ico=>{
+      h+=`<button style="font-size:22px;padding:8px;border-radius:10px;border:1.5px solid ${ico===ci?'var(--text)':'var(--faint)'}" data-ico onclick="document.querySelectorAll('[data-ico]').forEach(b=>b.style.borderColor='var(--faint)');this.style.borderColor='var(--text)';document.getElementById('m-ci').value='${ico}'">${ico}</button>`;
     });
-    h+=`</div><input type="hidden" id="m-ci" value="${icos[0]}"></div>`;
+    h+=`</div><input type="hidden" id="m-ci" value="${ci}"></div>`;
+
+    h+=`<div class="field"><label>时间预算</label><div class="hint">这个项目的预估总时间怎么算？</div><div class="status-btns">`;
+    h+=`<button class="st-btn ${mode==='tasks'?'sel':''}" data-bmode="tasks" onclick="setBudMode('tasks')">按任务累加</button>`;
+    h+=`<button class="st-btn ${mode==='fixed'?'sel':''}" data-bmode="fixed" onclick="setBudMode('fixed')">按项目设定</button>`;
+    h+=`</div><input type="hidden" id="m-cbmode" value="${mode}"></div>`;
+    h+=`<div class="field" id="cbud-field" style="display:${mode==='fixed'?'block':'none'}"><label>项目预估总时间</label>`;
+    h+=timePickerHTML('cbud',[120,300,600,1200,2400,4800],bud);
+    h+=`</div>`;
+
     h+=`<div class="btn-row"><button class="btn btn-cancel" onclick="closeModal()">取消</button>`;
-    h+=`<button class="btn btn-primary" onclick="saveCat()">添加</button></div></div>`;
+    h+=`<button class="btn btn-primary" onclick="saveCat()">${isEdit?'保存':'添加'}</button></div></div>`;
     div.innerHTML=h;
 
   }else if(modal==='quickmark'){
@@ -641,6 +928,7 @@ function saveItem(){
   const sdEl=document.getElementById('m-sd'),edEl=document.getElementById('m-ed');
   const stEl=document.getElementById('m-st');
   const title=(tEl?tEl.value:'').trim();if(!title)return;
+  const est=readEst('iest');
 
   if(editId){
     const item=D.items.find(i=>i.id===editId);
@@ -648,12 +936,13 @@ function saveItem(){
       item.title=title;item.note=(nEl?nEl.value:'').trim();
       item.startDate=sdEl?sdEl.value:'';item.endDate=edEl?edEl.value:'';
       item.status=stEl?stEl.value:item.status;item.photos=formPhotos.slice();
+      item.estMins=est;
     }
   }else{
     const items=catItems(curCat);
     D.items.push({id:uid(),catId:curCat,title,note:(nEl?nEl.value:'').trim(),
       status:'waiting',order:items.length,startDate:sdEl?sdEl.value:'',endDate:edEl?edEl.value:'',
-      sessions:[],photos:formPhotos.slice()});
+      estMins:est,sessions:[],photos:formPhotos.slice()});
   }
   closeModal();saveData();render();
 }
@@ -661,7 +950,16 @@ function saveItem(){
 function saveCat(){
   const nEl=document.getElementById('m-cn'),iEl=document.getElementById('m-ci');
   const name=(nEl?nEl.value:'').trim();if(!name)return;
-  D.categories.push({id:uid(),name,ico:iEl?iEl.value:'📖'});
+  const ico=iEl?iEl.value:'📖';
+  const mode=document.getElementById('m-cbmode').value||'tasks';
+  const budget=mode==='fixed'?readEst('cbud'):0;
+  if(editCatId){
+    const c=D.categories.find(x=>x.id===editCatId);
+    if(c){c.name=name;c.ico=ico;c.budgetMode=mode;c.estMins=mode==='fixed'?budget:0;}
+  }else{
+    const maxOrder=D.categories.reduce((m,c)=>Math.max(m,c.order||0),-1);
+    D.categories.push({id:uid(),name,ico,order:maxOrder+1,budgetMode:mode,estMins:mode==='fixed'?budget:0});
+  }
   closeModal();saveData();render();
 }
 
@@ -676,9 +974,34 @@ function saveQuickMark(){
   closeModal();saveData();render();
 }
 
+/* ═══ DATA MANAGEMENT ═══ */
+function exportJSON(){
+  const d={version:5,app:'蛋读无妨',exported:new Date().toISOString(),categories:D.categories,items:D.items};
+  const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`danduwufang_${today()}.json`;a.click();URL.revokeObjectURL(a.href);
+}
+function importJSON(file){
+  const r=new FileReader();r.onload=e=>{try{
+    const d=JSON.parse(e.target.result);
+    if(d.categories)D.categories=d.categories;
+    if(d.items)D.items=d.items;
+    normalize();saveData();render();alert('导入成功！');
+  }catch(err){alert('导入失败：文件格式不对');}};r.readAsText(file);
+}
+function clearAll(){
+  if(!confirm('确定清除所有数据？建议先导出备份。'))return;
+  D={categories:[
+    {id:'book',name:'书',ico:'📖',order:0,budgetMode:'tasks',estMins:0},
+    {id:'course',name:'课程',ico:'📚',order:1,budgetMode:'tasks',estMins:0},
+    {id:'film',name:'电影',ico:'🎬',order:2,budgetMode:'tasks',estMins:0}
+  ],items:[]};
+  saveData();render();
+}
+
 /* ═══ INIT ═══ */
 (async()=>{
-  await loadData();render();
+  await loadData();normalize();render();
   document.getElementById('imp-f').addEventListener('change',e=>{if(e.target.files[0])importJSON(e.target.files[0]);e.target.value='';});
   if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
